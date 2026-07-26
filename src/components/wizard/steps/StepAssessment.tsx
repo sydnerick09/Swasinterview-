@@ -2,12 +2,11 @@
 
 import { useWizard } from "../WizardContext";
 import { TypingTest } from "../TypingTest";
-import { RadioCards, SelectField, TextArea } from "@/components/ui/Field";
+import { RadioCards, SelectField } from "@/components/ui/Field";
 import { PROFICIENCY } from "@/lib/options";
 import {
   MCQ_SECTIONS,
   TOOL_RATINGS,
-  FREE_RESPONSE_TASKS,
   PERSONALITY_ITEMS,
   LIKERT_LABELS,
 } from "@/lib/assessment";
@@ -28,12 +27,6 @@ export function StepAssessment() {
     setApp((prev) => ({
       ...prev,
       assessment: { ...prev.assessment, ratings: { ...prev.assessment.ratings, [id]: level } },
-    }));
-
-  const setFreeText = (id: string, text: string) =>
-    setApp((prev) => ({
-      ...prev,
-      assessment: { ...prev.assessment, freeText: { ...prev.assessment.freeText, [id]: text } },
     }));
 
   const setPersonality = (id: string, val: number) =>
@@ -118,33 +111,9 @@ export function StepAssessment() {
         {errors.typing && <p className="mt-2 text-xs text-red-600">{errors.typing}</p>}
       </section>
 
-      {/* Free-response tasks */}
+      {/* Work-style questions (Likert) */}
       <section>
-        <h4 className="mb-3 text-base font-semibold">Practical Tasks</h4>
-        <div className="space-y-4">
-          {FREE_RESPONSE_TASKS.map((task) => {
-            const text = asm.freeText[task.id] ?? "";
-            const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
-            return (
-              <div key={task.id}>
-                <TextArea
-                  label={task.title}
-                  hint={task.prompt}
-                  rows={3}
-                  value={text}
-                  onChange={(e) => setFreeText(task.id, e.target.value)}
-                  placeholder={task.placeholder}
-                />
-                <p className="mt-1 text-right text-xs text-muted">{wordCount} words</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Personality (Likert) */}
-      <section>
-        <h4 className="mb-3 text-base font-semibold">Personality & Work Style</h4>
+        <h4 className="mb-3 text-base font-semibold">Work Style</h4>
         <div className="space-y-4">
           {PERSONALITY_ITEMS.map((item) => (
             <div key={item.id}>
