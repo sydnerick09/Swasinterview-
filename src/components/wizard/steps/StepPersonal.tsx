@@ -11,8 +11,17 @@ export function StepPersonal() {
   const p = app.personal;
   const countryOptions = COUNTRIES.map((c) => ({ value: c, label: c }));
 
+  const prefilled = Boolean(
+    app.account.fullName || app.account.email || app.account.phone || app.account.country,
+  );
+
   return (
     <div className="grid gap-5 sm:grid-cols-2">
+      {prefilled && (
+        <p className="sm:col-span-2 rounded-lg bg-brand-50 p-3 text-sm text-brand-800 dark:bg-brand-950/40 dark:text-brand-200">
+          Some details were carried over from your account. Feel free to edit any of them.
+        </p>
+      )}
       <TextField
         label="Full Name"
         required
