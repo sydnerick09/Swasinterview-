@@ -125,7 +125,7 @@ export function StepSkills() {
         placeholder="https://linkedin.com/in/…"
       />
       <TextField
-        label="Expected Hourly Rate (USD)"
+        label="Expected Hourly Rate (KES)"
         required
         type="number"
         min={0}

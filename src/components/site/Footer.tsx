@@ -41,8 +41,8 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/admin" className="hover:text-brand-600">
-                Admin
+              <Link href="/status" className="hover:text-brand-600">
+                Check Status
               </Link>
             </li>
           </ul>

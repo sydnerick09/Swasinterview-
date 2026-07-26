@@ -100,7 +100,7 @@ export function ApplicationSummary({
         <Row label="Skills" value={app.skills.skills.join(", ")} />
         <Row label="Languages" value={app.skills.languages.join(", ")} />
         <Row label="English Proficiency" value={app.skills.englishProficiency} />
-        <Row label="Expected Rate (USD/hr)" value={app.skills.expectedHourlyRate} />
+        <Row label="Expected Rate (KES/hr)" value={app.skills.expectedHourlyRate} />
         <Row label="Portfolio" value={app.skills.portfolioUrl} />
         <Row label="LinkedIn" value={app.skills.linkedinUrl} />
         <Row label="Summary" value={app.skills.professionalSummary} />

@@ -8,8 +8,8 @@
 export const PAYSTACK_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY ?? "";
 
 // Currency to charge in. Your Paystack account must have this currency enabled.
-// Application fees are defined in USD, so USD is the default.
-export const PAYSTACK_CURRENCY = process.env.NEXT_PUBLIC_PAYSTACK_CURRENCY ?? "USD";
+// Application fees are displayed and charged in Kenyan Shillings by default.
+export const PAYSTACK_CURRENCY = process.env.NEXT_PUBLIC_PAYSTACK_CURRENCY ?? "KES";
 
 export const PAYSTACK_SCRIPT_SRC = "https://js.paystack.co/v1/inline.js";
 

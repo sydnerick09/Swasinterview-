@@ -85,7 +85,7 @@ export function createEmptyApplication(): Application {
     },
     emergencyContact: { name: "", relationship: "", phone: "", email: "" },
     references: [],
-    payment: { amount: 0, currency: "USD", paid: false },
+    payment: { amount: 0, currency: "KES", paid: false },
     createdAt: now,
     updatedAt: now,
   };
