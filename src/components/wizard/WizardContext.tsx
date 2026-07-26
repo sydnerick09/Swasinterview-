@@ -17,6 +17,7 @@ import {
   setCurrentDraftId,
 } from "@/lib/storage/applications";
 import { validateStep } from "@/lib/validation";
+import { FormSkeleton } from "@/components/ui/Skeleton";
 import { TOTAL_STEPS } from "./steps-meta";
 
 type SectionKey = Exclude<
@@ -173,8 +174,14 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     clearErrors,
   ]);
 
+  // Until the draft has loaded from storage, `value` is null. We must NOT render the
+  // children here, because they call useWizard() which throws on a null context.
   if (!value) {
-    return <WizardContext.Provider value={null}>{children}</WizardContext.Provider>;
+    return (
+      <div className="container-page py-8">
+        <FormSkeleton />
+      </div>
+    );
   }
   return <WizardContext.Provider value={value}>{children}</WizardContext.Provider>;
 }
