@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import {
   CheckCircle2,
   Clock,
@@ -16,7 +15,7 @@ import { PaymentPanel } from "./PaymentPanel";
 import { DocumentDownloadList } from "@/components/DocumentDownloadList";
 import { ApplicationSummary } from "@/components/ApplicationSummary";
 import { StatusBadge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 import { FormSkeleton } from "@/components/ui/Skeleton";
 import { formatFee } from "@/lib/pricing";
@@ -57,12 +56,10 @@ export function StatusView({ idOrPublicId }: { idOrPublicId: string }) {
           We couldn&apos;t find an application with that ID in this browser.
         </p>
         <div className="mt-6 flex justify-center gap-3">
-          <Link href="/status">
-            <Button variant="outline">Try Again</Button>
-          </Link>
-          <Link href="/apply">
-            <Button>Start an Application</Button>
-          </Link>
+          <LinkButton href="/status" variant="outline">
+            Try Again
+          </LinkButton>
+          <LinkButton href="/apply">Start an Application</LinkButton>
         </div>
       </div>
     );

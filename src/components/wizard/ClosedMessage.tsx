@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { CalendarX, Clock } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils";
 
 export function ClosedMessage({
@@ -41,12 +40,10 @@ export function ClosedMessage({
           )}
         </p>
         <div className="mt-8 flex justify-center gap-3">
-          <Link href="/">
-            <Button variant="outline">Back to Home</Button>
-          </Link>
-          <Link href="/status">
-            <Button>Check Application Status</Button>
-          </Link>
+          <LinkButton href="/" variant="outline">
+            Back to Home
+          </LinkButton>
+          <LinkButton href="/status">Check Application Status</LinkButton>
         </div>
       </div>
     </div>

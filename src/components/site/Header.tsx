@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
-import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -39,15 +39,13 @@ export function Header() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {isAdmin ? (
-            <Link href="/">
-              <Button variant="outline" size="sm">
-                Back to Site
-              </Button>
-            </Link>
+            <LinkButton href="/" variant="outline" size="sm">
+              Back to Site
+            </LinkButton>
           ) : (
-            <Link href="/apply">
-              <Button size="sm">Apply Now</Button>
-            </Link>
+            <LinkButton href="/apply" size="sm">
+              Apply Now
+            </LinkButton>
           )}
         </div>
       </div>

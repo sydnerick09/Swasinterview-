@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -7,7 +6,7 @@ import { Benefits } from "@/components/home/Benefits";
 import { Process } from "@/components/home/Process";
 import { PricingPreview } from "@/components/home/PricingPreview";
 import { Faq } from "@/components/home/Faq";
-import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/Button";
 
 export default function HomePage() {
   return (
@@ -31,11 +30,13 @@ export default function HomePage() {
               automatically.
             </p>
             <div className="mt-8">
-              <Link href="/apply">
-                <Button size="lg" className="bg-white text-brand-700 hover:bg-brand-50">
-                  Start your application <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
+              <LinkButton
+                href="/apply"
+                size="lg"
+                className="bg-white text-brand-700 hover:bg-brand-50"
+              >
+                Start your application <ArrowRight className="h-4 w-4" />
+              </LinkButton>
             </div>
           </div>
         </section>

@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { ArrowRight, ShieldCheck, Clock } from "lucide-react";
 import { CountdownTimer } from "@/components/CountdownTimer";
-import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/Button";
 
 export function Hero() {
   return (
@@ -30,20 +29,21 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href="/apply">
-              <Button size="lg" className="w-full bg-white text-brand-700 hover:bg-brand-50 sm:w-auto">
-                Apply Now <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/status">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full border-white/40 bg-transparent text-white hover:bg-white/10 sm:w-auto"
-              >
-                Check Application Status
-              </Button>
-            </Link>
+            <LinkButton
+              href="/apply"
+              size="lg"
+              className="w-full bg-white text-brand-700 hover:bg-brand-50 sm:w-auto"
+            >
+              Apply Now <ArrowRight className="h-4 w-4" />
+            </LinkButton>
+            <LinkButton
+              href="/status"
+              size="lg"
+              variant="outline"
+              className="w-full border-white/40 bg-transparent text-white hover:bg-white/10 sm:w-auto"
+            >
+              Check Application Status
+            </LinkButton>
           </div>
 
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-white/70">
