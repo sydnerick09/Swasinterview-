@@ -35,6 +35,10 @@ type SectionKey = Exclude<
 
 export type SaveState = "idle" | "saving" | "saved";
 
+// Fields that belong to the user's single profile and are reused across forms.
+// Editing any of these anywhere updates the value everywhere (live two-way sync).
+export type SharedProfileField = "fullName" | "email" | "phone" | "country";
+
 interface WizardContextValue {
   app: Application;
   step: number;
@@ -45,6 +49,8 @@ interface WizardContextValue {
   setApp: (updater: (prev: Application) => Application) => void;
   patchSection: <K extends SectionKey>(section: K, patch: Partial<Application[K]>) => void;
   replaceSection: <K extends SectionKey>(section: K, value: Application[K]) => void;
+  /** Update a shared profile field in every place it appears (account + personal). */
+  setSharedField: (field: SharedProfileField, value: string) => void;
   // navigation
   goTo: (step: number) => void;
   next: () => boolean;
@@ -105,6 +111,23 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     [setApp],
   );
 
+  // Shared profile fields live in one logical place: writing one keeps account and
+  // personal identical, so the user never enters the same detail twice.
+  const setSharedField = useCallback(
+    (field: SharedProfileField, value: string) => {
+      setApp((prev) => {
+        const account = { ...prev.account, [field]: value };
+        let personal = { ...prev.personal, [field]: value };
+        // Default nationality to the chosen country until the user sets it explicitly.
+        if (field === "country" && !prev.personal.nationality) {
+          personal = { ...personal, nationality: value };
+        }
+        return { ...prev, account, personal };
+      });
+    },
+    [setApp],
+  );
+
   const clearErrors = useCallback(() => setErrors({}), []);
 
   const validateCurrent = useCallback(() => {
@@ -153,6 +176,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       setApp,
       patchSection,
       replaceSection,
+      setSharedField,
       goTo,
       next,
       back,
@@ -167,6 +191,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     setApp,
     patchSection,
     replaceSection,
+    setSharedField,
     goTo,
     next,
     back,

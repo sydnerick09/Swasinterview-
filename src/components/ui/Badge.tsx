@@ -4,13 +4,14 @@ import type { ApplicationStatus } from "@/lib/types";
 
 type Tone = "gray" | "blue" | "green" | "red" | "amber" | "purple";
 
+// Monochrome tones — distinguished by fill/shade/outline rather than hue.
 const tones: Record<Tone, string> = {
-  gray: "bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-200",
-  blue: "bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-200",
-  green: "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300",
-  red: "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300",
-  amber: "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300",
-  purple: "bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300",
+  gray: "bg-[var(--border)] text-[var(--muted)]", // draft
+  amber: "border border-dashed border-[var(--muted)] text-[var(--text)] bg-transparent", // pending
+  blue: "bg-[var(--muted)] text-[var(--card)]", // paid
+  green: "bg-[var(--text)] text-[var(--card)]", // approved
+  red: "border border-[var(--text)] text-[var(--text)] bg-transparent", // rejected
+  purple: "bg-[var(--border)] text-[var(--text)]",
 };
 
 export function Badge({

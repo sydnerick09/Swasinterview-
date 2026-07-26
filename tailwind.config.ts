@@ -1,5 +1,37 @@
 import type { Config } from "tailwindcss";
 
+// Monochrome (black & white) design system.
+// A single neutral grayscale is reused for every semantic colour so the entire UI
+// renders in black, white and grays only.
+const mono = {
+  50: "#fafafa",
+  100: "#f4f4f5",
+  200: "#e4e4e7",
+  300: "#d4d4d8",
+  400: "#a1a1aa",
+  500: "#71717a",
+  600: "#52525b",
+  700: "#3f3f46",
+  800: "#27272a",
+  900: "#18181b",
+  950: "#09090b",
+};
+
+// Primary/brand scale — darker end is pure black so primary actions read as black.
+const brand = {
+  50: "#f6f6f6",
+  100: "#e7e7e7",
+  200: "#d1d1d1",
+  300: "#b4b4b4",
+  400: "#888888",
+  500: "#404040",
+  600: "#111111",
+  700: "#000000",
+  800: "#000000",
+  900: "#1a1a1a",
+  950: "#141414",
+};
+
 const config: Config = {
   darkMode: "class",
   content: [
@@ -7,22 +39,30 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    // Full screen list (root, not extend) so `xs` sorts before `sm` and never
+    // overrides larger breakpoints on wide screens.
+    screens: {
+      xs: "400px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
-        // Blue primary palette (2017 corporate)
-        brand: {
-          50: "#eef5ff",
-          100: "#d9e8ff",
-          200: "#bcd7ff",
-          300: "#8ebdff",
-          400: "#5897ff",
-          500: "#2f6fed",
-          600: "#1b56d6",
-          700: "#1744ad",
-          800: "#183c8c",
-          900: "#193672",
-          950: "#132248",
-        },
+        brand,
+        // Remap every semantic + neutral colour to the same grayscale.
+        gray: mono,
+        slate: mono,
+        zinc: mono,
+        neutral: mono,
+        red: mono,
+        green: mono,
+        amber: mono,
+        yellow: mono,
+        blue: mono,
+        purple: mono,
       },
       fontFamily: {
         sans: [
@@ -37,8 +77,9 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        card: "0 1px 3px rgba(16, 24, 40, 0.1), 0 1px 2px rgba(16, 24, 40, 0.06)",
-        "card-lg": "0 10px 25px -5px rgba(16, 24, 40, 0.1), 0 8px 10px -6px rgba(16, 24, 40, 0.05)",
+        card: "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
+        "card-lg":
+          "0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.06)",
       },
       borderRadius: {
         xl: "0.9rem",

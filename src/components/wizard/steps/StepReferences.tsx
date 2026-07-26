@@ -53,32 +53,32 @@ export function StepReferences() {
                 label="Name"
                 value={r.name}
                 onChange={(e) => update(i, { name: e.target.value })}
-                placeholder="Full name"
+                placeholder="Enter the reference's full name"
               />
               <TextField
                 label="Relationship"
                 value={r.relationship}
                 onChange={(e) => update(i, { relationship: e.target.value })}
-                placeholder="e.g. Former Manager"
+                placeholder="Enter the relationship"
               />
               <TextField
                 label="Company / Organisation"
                 value={r.company}
                 onChange={(e) => update(i, { company: e.target.value })}
-                placeholder="Company name"
+                placeholder="Enter the company or organisation"
               />
               <TextField
                 label="Phone"
                 value={r.phone}
                 onChange={(e) => update(i, { phone: e.target.value })}
-                placeholder="+254 700 000000"
+                placeholder="Enter the phone number"
               />
               <TextField
                 label="Email"
                 type="email"
                 value={r.email}
                 onChange={(e) => update(i, { email: e.target.value })}
-                placeholder="reference@example.com"
+                placeholder="Enter the email address"
                 className="sm:col-span-2"
               />
             </div>

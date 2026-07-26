@@ -22,8 +22,10 @@ const variants: Record<Variant, string> = {
   outline:
     "border border-[var(--border)] bg-[var(--card)] text-[var(--text)] hover:bg-gray-50 dark:hover:bg-slate-800",
   ghost: "text-[var(--text)] hover:bg-gray-100 dark:hover:bg-slate-800",
-  danger: "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-300",
-  success: "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-300",
+  // Monochrome: success is solid-filled, danger is outlined, so they stay distinct.
+  danger:
+    "border-2 border-[var(--text)] bg-transparent text-[var(--text)] hover:bg-gray-100 dark:hover:bg-slate-800",
+  success: "bg-brand-700 text-white hover:bg-brand-800 focus-visible:ring-brand-300",
 };
 
 const sizes: Record<Size, string> = {

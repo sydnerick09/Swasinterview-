@@ -31,8 +31,35 @@ export function StepSubmit() {
     setSubmitting(true);
     const applicationId = generateApplicationId();
     const now = new Date().toISOString();
+
+    // Trim whitespace from text fields before saving the final record (spec §6).
     const submitted: Application = {
       ...app,
+      account: {
+        ...app.account,
+        fullName: app.account.fullName.trim(),
+        email: app.account.email.trim(),
+        phone: app.account.phone.trim(),
+        username: app.account.username.trim(),
+        country: app.account.country.trim(),
+      },
+      personal: {
+        ...app.personal,
+        fullName: app.personal.fullName.trim(),
+        email: app.personal.email.trim(),
+        phone: app.personal.phone.trim(),
+        nationality: app.personal.nationality.trim(),
+        country: app.personal.country.trim(),
+        countyState: app.personal.countyState.trim(),
+        city: app.personal.city.trim(),
+        idOrPassportNumber: app.personal.idOrPassportNumber.trim(),
+      },
+      emergencyContact: {
+        ...app.emergencyContact,
+        name: app.emergencyContact.name.trim(),
+        phone: app.emergencyContact.phone.trim(),
+        email: app.emergencyContact.email.trim(),
+      },
       applicationId,
       status: "submitted",
       locked: true,

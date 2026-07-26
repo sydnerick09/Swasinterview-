@@ -7,7 +7,7 @@ import { GENDERS } from "@/lib/options";
 import type { Gender } from "@/lib/types";
 
 export function StepPersonal() {
-  const { app, patchSection, errors } = useWizard();
+  const { app, patchSection, setSharedField, errors } = useWizard();
   const p = app.personal;
   const countryOptions = COUNTRIES.map((c) => ({ value: c, label: c }));
 
@@ -18,17 +18,18 @@ export function StepPersonal() {
   return (
     <div className="grid gap-5 sm:grid-cols-2">
       {prefilled && (
-        <p className="sm:col-span-2 rounded-lg bg-brand-50 p-3 text-sm text-brand-800 dark:bg-brand-950/40 dark:text-brand-200">
-          Some details were carried over from your account. Feel free to edit any of them.
+        <p className="sm:col-span-2 rounded-lg bg-brand-50 p-3 text-sm text-[var(--text)] dark:bg-brand-950/60 dark:text-brand-100">
+          Details from your account have been filled in automatically. Any change you make here
+          updates them everywhere.
         </p>
       )}
       <TextField
         label="Full Name"
         required
         value={p.fullName}
-        onChange={(e) => patchSection("personal", { fullName: e.target.value })}
+        onChange={(e) => setSharedField("fullName", e.target.value)}
         error={errors.fullName}
-        placeholder="Jane Doe"
+        placeholder="Enter your full name"
       />
       <TextField
         label="Date of Birth"
@@ -42,7 +43,7 @@ export function StepPersonal() {
       <SelectField
         label="Gender"
         required
-        placeholder="Select gender"
+        placeholder="Select your gender"
         options={GENDERS}
         value={p.gender}
         onChange={(e) => patchSection("personal", { gender: e.target.value as Gender })}
@@ -51,7 +52,7 @@ export function StepPersonal() {
       <SelectField
         label="Nationality"
         required
-        placeholder="Select nationality"
+        placeholder="Select your nationality"
         options={countryOptions}
         value={p.nationality}
         onChange={(e) => patchSection("personal", { nationality: e.target.value })}
@@ -60,10 +61,10 @@ export function StepPersonal() {
       <SelectField
         label="Country of Residence"
         required
-        placeholder="Select country"
+        placeholder="Select your country"
         options={countryOptions}
         value={p.country}
-        onChange={(e) => patchSection("personal", { country: e.target.value })}
+        onChange={(e) => setSharedField("country", e.target.value)}
         error={errors.country}
       />
       <TextField
@@ -72,7 +73,7 @@ export function StepPersonal() {
         value={p.countyState}
         onChange={(e) => patchSection("personal", { countyState: e.target.value })}
         error={errors.countyState}
-        placeholder="e.g. Nairobi"
+        placeholder="Enter your county or state"
       />
       <TextField
         label="City"
@@ -80,7 +81,7 @@ export function StepPersonal() {
         value={p.city}
         onChange={(e) => patchSection("personal", { city: e.target.value })}
         error={errors.city}
-        placeholder="e.g. Westlands"
+        placeholder="Enter your city"
       />
       <TextField
         label="National ID or Passport Number"
@@ -88,24 +89,24 @@ export function StepPersonal() {
         value={p.idOrPassportNumber}
         onChange={(e) => patchSection("personal", { idOrPassportNumber: e.target.value })}
         error={errors.idOrPassportNumber}
-        placeholder="ID / Passport No."
+        placeholder="Enter your National ID or passport number"
       />
       <TextField
         label="Phone Number"
         required
         value={p.phone}
-        onChange={(e) => patchSection("personal", { phone: e.target.value })}
+        onChange={(e) => setSharedField("phone", e.target.value)}
         error={errors.phone}
-        placeholder="+254 700 000000"
+        placeholder="Enter your phone number"
       />
       <TextField
-        label="Email"
+        label="Email Address"
         required
         type="email"
         value={p.email}
-        onChange={(e) => patchSection("personal", { email: e.target.value })}
+        onChange={(e) => setSharedField("email", e.target.value)}
         error={errors.email}
-        placeholder="jane@example.com"
+        placeholder="Enter your email address"
       />
     </div>
   );

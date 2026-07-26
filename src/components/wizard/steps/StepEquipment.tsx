@@ -49,7 +49,7 @@ export function StepEquipment() {
         value={e.processor}
         onChange={(ev) => patchSection("equipment", { processor: ev.target.value })}
         error={errors.processor}
-        placeholder="e.g. Intel Core i5, Apple M2"
+        placeholder="Enter your processor"
       />
       <SelectField
         label="Internet Connection Type"

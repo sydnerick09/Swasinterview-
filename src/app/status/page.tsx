@@ -40,7 +40,7 @@ export default function StatusLookupPage() {
                   label="Application ID"
                   value={id}
                   onChange={(e) => setId(e.target.value)}
-                  placeholder="e.g. SWT-2026-8F3A2C"
+                  placeholder="Enter your Application ID"
                   autoFocus
                 />
                 <Button type="submit" className="w-full" size="lg">

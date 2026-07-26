@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 function Unit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-white/10 text-2xl font-bold tabular-nums text-white shadow-inner sm:h-20 sm:w-20 sm:text-3xl">
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10 text-lg font-bold tabular-nums text-white shadow-inner xs:h-14 xs:w-14 xs:text-xl sm:h-20 sm:w-20 sm:rounded-xl sm:text-3xl">
         {String(value).padStart(2, "0")}
       </div>
-      <span className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/70">
+      <span className="mt-1.5 text-[9px] font-semibold uppercase tracking-widest text-white/70 sm:mt-2 sm:text-[10px]">
         {label}
       </span>
     </div>
@@ -43,13 +43,13 @@ export function CountdownTimer({ className }: { className?: string }) {
   }
 
   return (
-    <div className={cn("flex items-center justify-center gap-3 sm:gap-4", className)}>
+    <div className={cn("flex items-center justify-center gap-1.5 xs:gap-2 sm:gap-4", className)}>
       <Unit value={countdown.days} label="Days" />
-      <span className="pb-6 text-2xl font-bold text-white/50">:</span>
+      <span className="pb-5 text-lg font-bold text-white/50 sm:pb-6 sm:text-2xl">:</span>
       <Unit value={countdown.hours} label="Hours" />
-      <span className="pb-6 text-2xl font-bold text-white/50">:</span>
+      <span className="pb-5 text-lg font-bold text-white/50 sm:pb-6 sm:text-2xl">:</span>
       <Unit value={countdown.minutes} label="Minutes" />
-      <span className="pb-6 text-2xl font-bold text-white/50">:</span>
+      <span className="pb-5 text-lg font-bold text-white/50 sm:pb-6 sm:text-2xl">:</span>
       <Unit value={countdown.seconds} label="Seconds" />
     </div>
   );

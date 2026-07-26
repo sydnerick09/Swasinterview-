@@ -34,7 +34,7 @@ export function StepSkills() {
         value={s.fieldOfStudy}
         onChange={(e) => patchSection("skills", { fieldOfStudy: e.target.value })}
         error={errors.fieldOfStudy}
-        placeholder="e.g. Business Administration"
+        placeholder="Enter your field of study"
       />
       <SelectField
         label="Years of Experience"
@@ -58,13 +58,13 @@ export function StepSkills() {
         label="Current / Most Recent Job Title"
         value={s.currentJobTitle}
         onChange={(e) => patchSection("skills", { currentJobTitle: e.target.value })}
-        placeholder="e.g. Data Entry Clerk"
+        placeholder="Enter your current or most recent job title"
       />
       <TextField
         label="Current / Most Recent Employer"
         value={s.currentEmployer}
         onChange={(e) => patchSection("skills", { currentEmployer: e.target.value })}
-        placeholder="Company name"
+        placeholder="Enter your employer"
       />
       <SelectField
         label="Primary Skill Category"
@@ -132,7 +132,7 @@ export function StepSkills() {
         value={s.expectedHourlyRate}
         onChange={(e) => patchSection("skills", { expectedHourlyRate: e.target.value })}
         error={errors.expectedHourlyRate}
-        placeholder="e.g. 8"
+        placeholder="Enter your expected hourly rate"
       />
       <div />
 
@@ -145,7 +145,7 @@ export function StepSkills() {
           onChange={(e) => patchSection("skills", { professionalSummary: e.target.value })}
           error={errors.professionalSummary}
           hint="Briefly describe your experience and what makes you a strong candidate (min 20 characters)."
-          placeholder="I am a detail-oriented professional with…"
+          placeholder="Write a short summary of your experience and strengths"
         />
       </div>
     </div>

@@ -18,7 +18,7 @@ export function StepEmergency() {
           label="Contact Name"
           value={ec.name}
           onChange={(e) => patchSection("emergencyContact", { name: e.target.value })}
-          placeholder="Full name"
+          placeholder="Enter the contact's full name"
         />
         <SelectField
           label="Relationship"
@@ -31,14 +31,14 @@ export function StepEmergency() {
           label="Phone Number"
           value={ec.phone}
           onChange={(e) => patchSection("emergencyContact", { phone: e.target.value })}
-          placeholder="+254 700 000000"
+          placeholder="Enter the phone number"
         />
         <TextField
           label="Email"
           type="email"
           value={ec.email}
           onChange={(e) => patchSection("emergencyContact", { email: e.target.value })}
-          placeholder="contact@example.com"
+          placeholder="Enter the email address"
         />
       </div>
     </div>

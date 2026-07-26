@@ -75,9 +75,11 @@ export function TypingTest({ value, onComplete }: Props) {
                   <span
                     key={ci}
                     className={cn(
-                      state === "correct" && "text-green-600 dark:text-green-400",
-                      state === "wrong" && "bg-red-200 text-red-700 dark:bg-red-900/50 dark:text-red-300",
-                      idx === typed.length && "border-b-2 border-brand-500",
+                      // Monochrome feedback: correct = dimmed, wrong = inverted highlight.
+                      state === "correct" && "text-[var(--muted)]",
+                      state === "wrong" &&
+                        "rounded-[2px] bg-[var(--text)] text-[var(--card)]",
+                      idx === typed.length && "border-b-2 border-[var(--text)]",
                     )}
                   >
                     {ch}

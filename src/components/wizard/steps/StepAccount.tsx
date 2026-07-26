@@ -6,45 +6,12 @@ import { useWizard } from "../WizardContext";
 import { TextField, SelectField } from "@/components/ui/Field";
 import { FeeDisplay } from "../FeeDisplay";
 import { COUNTRIES } from "@/lib/countries";
-import type { AccountInfo, PersonalInfo } from "@/lib/types";
-
-// Account fields that also appear on the Personal Information step. Filling them here
-// carries them over so the applicant doesn't have to retype them.
-const SHARED_FIELDS: Partial<Record<keyof AccountInfo, keyof PersonalInfo>> = {
-  fullName: "fullName",
-  email: "email",
-  phone: "phone",
-  country: "country",
-};
 
 export function StepAccount() {
-  const { app, setApp, patchSection, errors } = useWizard();
+  const { app, patchSection, setSharedField, errors } = useWizard();
   const a = app.account;
   const [showPassword, setShowPassword] = useState(false);
   const [confirm, setConfirm] = useState(a.password);
-
-  // Update an account field and mirror it into the matching Personal field — but only
-  // while that Personal field is still empty or still equals the previous account value.
-  // This keeps the two in sync without ever overwriting a value the applicant edited by hand.
-  const setAccountField = (field: keyof AccountInfo, value: string) => {
-    setApp((prev) => {
-      const account = { ...prev.account, [field]: value };
-      let personal = prev.personal;
-      const target = SHARED_FIELDS[field];
-      if (target) {
-        const current = prev.personal[target];
-        const previous = prev.account[field] as string;
-        if (!current || current === previous) {
-          personal = { ...personal, [target]: value };
-        }
-        // Default nationality to the selected country the first time one is chosen.
-        if (field === "country" && !prev.personal.nationality) {
-          personal = { ...personal, nationality: value };
-        }
-      }
-      return { ...prev, account, personal };
-    });
-  };
 
   return (
     <div className="grid gap-5 sm:grid-cols-2">
@@ -52,28 +19,28 @@ export function StepAccount() {
         label="Full Name"
         required
         value={a.fullName}
-        onChange={(e) => setAccountField("fullName", e.target.value)}
+        onChange={(e) => setSharedField("fullName", e.target.value)}
         error={errors.fullName}
-        placeholder="Jane Doe"
+        placeholder="Enter your full name"
         autoComplete="name"
       />
       <TextField
-        label="Email"
+        label="Email Address"
         required
         type="email"
         value={a.email}
-        onChange={(e) => setAccountField("email", e.target.value)}
+        onChange={(e) => setSharedField("email", e.target.value)}
         error={errors.email}
-        placeholder="jane@example.com"
+        placeholder="Enter your email address"
         autoComplete="email"
       />
       <TextField
         label="Phone Number"
         required
         value={a.phone}
-        onChange={(e) => setAccountField("phone", e.target.value)}
+        onChange={(e) => setSharedField("phone", e.target.value)}
         error={errors.phone}
-        placeholder="+254 700 000000"
+        placeholder="Enter your phone number"
         autoComplete="tel"
       />
       <SelectField
@@ -82,7 +49,7 @@ export function StepAccount() {
         placeholder="Select your country"
         options={COUNTRIES.map((c) => ({ value: c, label: c }))}
         value={a.country}
-        onChange={(e) => setAccountField("country", e.target.value)}
+        onChange={(e) => setSharedField("country", e.target.value)}
         error={errors.country}
       />
 
@@ -97,7 +64,7 @@ export function StepAccount() {
         value={a.username}
         onChange={(e) => patchSection("account", { username: e.target.value })}
         error={errors.username}
-        placeholder="janedoe"
+        placeholder="Enter your username"
         autoComplete="username"
       />
       <div />
@@ -110,7 +77,8 @@ export function StepAccount() {
           value={a.password}
           onChange={(e) => patchSection("account", { password: e.target.value })}
           error={errors.password}
-          placeholder="At least 8 characters"
+          hint="At least 8 characters"
+          placeholder="Enter your password"
           autoComplete="new-password"
         />
         <button
@@ -136,7 +104,7 @@ export function StepAccount() {
             ? "Passwords do not match"
             : errors.confirmPassword
         }
-        placeholder="Re-enter your password"
+        placeholder="Confirm your password"
         autoComplete="new-password"
       />
     </div>
