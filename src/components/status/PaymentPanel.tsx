@@ -11,7 +11,6 @@ import { sendConfirmationEmail } from "@/lib/email";
 import { uid } from "@/lib/utils";
 import {
   PAYSTACK_PUBLIC_KEY,
-  PAYSTACK_CURRENCY,
   PAYSTACK_SCRIPT_SRC,
   isPaystackConfigured,
   toSubunit,
@@ -27,6 +26,7 @@ export function PaymentPanel({ app, onPaid }: { app: Application; onPaid: () => 
 
   const country = app.account.country || app.personal.country;
   const email = app.account.email || app.personal.email;
+  const currency = app.payment.currency;
   const paystackEnabled = isPaystackConfigured();
 
   // Persist a successful (and verified) payment.
@@ -58,7 +58,7 @@ export function PaymentPanel({ app, onPaid }: { app: Application; onPaid: () => 
       key: PAYSTACK_PUBLIC_KEY,
       email,
       amount: toSubunit(app.payment.amount),
-      currency: PAYSTACK_CURRENCY,
+      currency,
       ref: reference,
       channels: ["card", "bank", "ussd", "bank_transfer", "mobile_money"],
       metadata: {
@@ -128,7 +128,7 @@ export function PaymentPanel({ app, onPaid }: { app: Application; onPaid: () => 
                 loading={processing || !scriptReady}
                 onClick={payWithPaystack}
               >
-                <Lock className="h-4 w-4" /> Pay {formatFee(app.payment.amount)} with Paystack
+                <Lock className="h-4 w-4" /> Pay {formatFee(app.payment.amount, currency)} with Paystack
               </Button>
               <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
                 <ShieldCheck className="h-3.5 w-3.5" /> Payments are processed and verified securely by Paystack.
@@ -144,7 +144,7 @@ export function PaymentPanel({ app, onPaid }: { app: Application; onPaid: () => 
                 </span>
               </div>
               <Button className="mt-5 w-full" size="lg" loading={processing} onClick={payDemo}>
-                <Lock className="h-4 w-4" /> Pay {formatFee(app.payment.amount)} (Demo)
+                <Lock className="h-4 w-4" /> Pay {formatFee(app.payment.amount, currency)} (Demo)
               </Button>
             </>
           )}
@@ -171,9 +171,9 @@ export function PaymentPanel({ app, onPaid }: { app: Application; onPaid: () => 
               <dd className="max-w-[180px] truncate font-medium" title={email}>{email}</dd>
             </div>
             <div className="mt-2 flex justify-between border-t border-[var(--border)] pt-3">
-              <dt className="font-semibold">Amount Due ({PAYSTACK_CURRENCY})</dt>
+              <dt className="font-semibold">Amount Due ({currency})</dt>
               <dd className="text-xl font-extrabold text-brand-700 dark:text-brand-200">
-                {formatFee(app.payment.amount)}
+                {formatFee(app.payment.amount, currency)}
               </dd>
             </div>
           </dl>

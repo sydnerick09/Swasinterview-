@@ -30,19 +30,24 @@ export function Footer() {
                 FAQ
               </Link>
             </li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="mb-3 text-sm font-semibold">Company</h4>
-          <ul className="space-y-2 text-sm text-muted">
             <li>
               <Link href="/#benefits" className="hover:text-brand-600">
                 Why SWASTASK
               </Link>
             </li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="mb-3 text-sm font-semibold">Legal</h4>
+          <ul className="space-y-2 text-sm text-muted">
             <li>
-              <Link href="/status" className="hover:text-brand-600">
-                Check Status
+              <Link href="/terms" className="hover:text-brand-600">
+                Terms &amp; Conditions
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="hover:text-brand-600">
+                Privacy Policy
               </Link>
             </li>
           </ul>

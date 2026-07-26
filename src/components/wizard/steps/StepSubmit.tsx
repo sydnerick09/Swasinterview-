@@ -7,7 +7,7 @@ import { useWizard } from "../WizardContext";
 import { Button } from "@/components/ui/Button";
 import { CheckboxField } from "@/components/ui/Field";
 import { useToast } from "@/components/ui/Toast";
-import { formatFee, getApplicationFee } from "@/lib/pricing";
+import { formatFee, getApplicationFee, getApplicationCurrency } from "@/lib/pricing";
 import { computeAssessmentScore } from "@/lib/assessment";
 import { saveApplication, setCurrentDraftId } from "@/lib/storage/applications";
 import { generateApplicationId } from "@/lib/utils";
@@ -22,6 +22,7 @@ export function StepSubmit() {
 
   const country = app.account.country || app.personal.country;
   const fee = getApplicationFee(country);
+  const currency = getApplicationCurrency(country);
 
   const submit = async () => {
     if (!agree) {
@@ -68,7 +69,7 @@ export function StepSubmit() {
         ...app.assessment,
         score: computeAssessmentScore(app.assessment.answers),
       },
-      payment: { ...app.payment, amount: fee, paid: false },
+      payment: { ...app.payment, amount: fee, currency, paid: false },
     };
     saveApplication(submitted);
     setCurrentDraftId(null); // start a fresh draft next time
@@ -95,7 +96,7 @@ export function StepSubmit() {
           <div className="flex justify-between border-t border-brand-200 pt-2 dark:border-brand-900">
             <span className="font-semibold">Amount Due</span>
             <span className="text-lg font-extrabold text-brand-700 dark:text-brand-200">
-              {formatFee(fee)}
+              {formatFee(fee, currency)}
             </span>
           </div>
         </div>

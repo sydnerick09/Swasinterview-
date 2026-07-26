@@ -131,7 +131,7 @@ export interface Reference {
 
 export interface PaymentInfo {
   amount: number;
-  currency: "KES";
+  currency: "KES" | "UGX" | "TZS" | "USD";
   paid: boolean;
   paidAt?: string;
   transactionRef?: string;

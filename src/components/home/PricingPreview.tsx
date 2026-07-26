@@ -1,13 +1,13 @@
-import { COUNTRY_FEES, DEFAULT_FEE, formatFee } from "@/lib/pricing";
+import { PRICING_TABLE, formatMoney } from "@/lib/pricing";
 
 export function PricingPreview() {
-  const entries = Object.entries(COUNTRY_FEES);
   return (
     <section className="container-page py-16 sm:py-20">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight">Application fees by country</h2>
         <p className="mt-3 text-muted">
-          Your one-time application fee is calculated automatically from the country you select.
+          Your one-time application fee is calculated automatically from the country you select and
+          shown in your local currency.
         </p>
       </div>
 
@@ -20,23 +20,30 @@ export function PricingPreview() {
             </tr>
           </thead>
           <tbody>
-            {entries.map(([country, fee], i) => (
-              <tr
-                key={country}
-                className={i % 2 === 0 ? "bg-transparent" : "bg-[var(--card)]/60"}
-              >
-                <td className="px-5 py-2.5">{country}</td>
-                <td className="px-5 py-2.5 text-right font-semibold tabular-nums">
-                  {formatFee(fee)}
-                </td>
-              </tr>
-            ))}
-            <tr className="bg-brand-50 dark:bg-brand-950/40">
-              <td className="px-5 py-2.5 font-medium">All other countries</td>
-              <td className="px-5 py-2.5 text-right font-bold tabular-nums">
-                {formatFee(DEFAULT_FEE)}
-              </td>
-            </tr>
+            {PRICING_TABLE.map((row, i) => {
+              const isDefault = row.label === "All other countries";
+              return (
+                <tr
+                  key={row.label}
+                  className={
+                    isDefault
+                      ? "bg-brand-50 dark:bg-brand-950/40"
+                      : i % 2 === 0
+                        ? "bg-transparent"
+                        : "bg-[var(--card)]/60"
+                  }
+                >
+                  <td className={`px-5 py-2.5 ${isDefault ? "font-medium" : ""}`}>{row.label}</td>
+                  <td
+                    className={`px-5 py-2.5 text-right tabular-nums ${
+                      isDefault ? "font-bold" : "font-semibold"
+                    }`}
+                  >
+                    {formatMoney(row.price.amount, row.price.currency)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

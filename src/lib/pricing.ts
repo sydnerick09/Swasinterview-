@@ -1,52 +1,91 @@
-// Dynamic country pricing. The application fee is derived from the selected country
-// and displayed/charged in Kenyan Shillings (KES). The USD figures below are the
-// canonical base; every KES amount is converted dynamically from them using the
-// configurable exchange rate, so updating the rate updates the whole app.
-// The UI must never allow manual editing of the fee.
+// Per-country pricing. Each country resolves to an { amount, currency } pair that is
+// both displayed to the applicant and charged via Paystack — display and charge always match.
+//
+// Currency rules:
+//   Kenya                  -> KES 200 (fixed)
+//   Uganda                 -> UGX (≈ KES 500 equivalent)
+//   Tanzania               -> TZS (≈ KES 400 equivalent)
+//   England / United Kingdom -> KES 7,000
+//   Burundi                -> USD
+//   Every other country    -> USD
+// No country other than Kenya and England is ever shown in KES.
 
-export const CURRENCY = "KES";
+export type Currency = "KES" | "UGX" | "TZS" | "USD";
 
-// USD -> KES exchange rate. Configurable at deploy time via NEXT_PUBLIC_USD_TO_KES.
-export const USD_TO_KES = Number(process.env.NEXT_PUBLIC_USD_TO_KES) || 130;
+export interface CountryPrice {
+  currency: Currency;
+  amount: number;
+}
 
-const DEFAULT_FEE_USD = 63; // "All other countries"
+// KES -> local-currency conversion rates (configurable at deploy time). Used only to
+// derive the Uganda/Tanzania local amounts from their KES equivalents.
+const KES_TO_UGX = Number(process.env.NEXT_PUBLIC_KES_TO_UGX) || 29;
+const KES_TO_TZS = Number(process.env.NEXT_PUBLIC_KES_TO_TZS) || 20;
 
-const COUNTRY_FEES_USD: Record<string, number> = {
-  "United States": 83,
-  "United Kingdom": 76,
-  Australia: 92,
-  China: 170,
-  Kenya: 43,
-  Uganda: 32,
-  Tanzania: 16,
-  Nigeria: 87,
-  Somalia: 2,
-  Burundi: 19,
-  England: 29,
+const UGANDA_KES_EQUIVALENT = 500;
+const TANZANIA_KES_EQUIVALENT = 400;
+
+const roundTo = (value: number, step: number) => Math.round(value / step) * step;
+
+export const DEFAULT_PRICE: CountryPrice = { currency: "USD", amount: 63 };
+
+// Explicit per-country prices. Countries not listed fall back to DEFAULT_PRICE (USD).
+export const COUNTRY_PRICING: Record<string, CountryPrice> = {
+  Kenya: { currency: "KES", amount: 200 },
+  England: { currency: "KES", amount: 7000 },
+  "United Kingdom": { currency: "KES", amount: 7000 },
+  Uganda: { currency: "UGX", amount: roundTo(UGANDA_KES_EQUIVALENT * KES_TO_UGX, 500) },
+  Tanzania: { currency: "TZS", amount: roundTo(TANZANIA_KES_EQUIVALENT * KES_TO_TZS, 500) },
+  Burundi: { currency: "USD", amount: 19 },
+  "United States": { currency: "USD", amount: 83 },
+  China: { currency: "USD", amount: 170 },
+  Nigeria: { currency: "USD", amount: 87 },
+  Australia: { currency: "USD", amount: 92 },
+  Somalia: { currency: "USD", amount: 2 },
 };
 
-/** Convert a USD amount to KES, rounded to the nearest 10 shillings for tidy figures. */
-export function usdToKes(usd: number): number {
-  return Math.round((usd * USD_TO_KES) / 10) * 10;
+/** Resolve the { amount, currency } for a country, defaulting to USD. */
+export function getCountryPrice(country?: string | null): CountryPrice {
+  if (!country) return DEFAULT_PRICE;
+  return COUNTRY_PRICING[country] ?? DEFAULT_PRICE;
 }
 
-// Country fee table, dynamically converted to KES.
-export const DEFAULT_FEE = usdToKes(DEFAULT_FEE_USD);
-
-export const COUNTRY_FEES: Record<string, number> = Object.fromEntries(
-  Object.entries(COUNTRY_FEES_USD).map(([country, usd]) => [country, usdToKes(usd)]),
-);
-
-/**
- * Returns the application fee (KES) for a given country.
- * Falls back to the default fee for any country not explicitly listed.
- */
-export function getApplicationFee(country: string | undefined | null): number {
-  if (!country) return DEFAULT_FEE;
-  return COUNTRY_FEES[country] ?? DEFAULT_FEE;
+/** The fee amount for a country (in that country's currency). */
+export function getApplicationFee(country?: string | null): number {
+  return getCountryPrice(country).amount;
 }
 
-/** Formats a KES amount for display, e.g. `KES 5,590`. */
-export function formatFee(amount: number): string {
-  return `KES ${amount.toLocaleString("en-KE")}`;
+/** The currency a country is charged/displayed in. */
+export function getApplicationCurrency(country?: string | null): Currency {
+  return getCountryPrice(country).currency;
 }
+
+/** Format an amount in a given currency, e.g. `KES 200`, `UGX 14,500`, `$63`. */
+export function formatMoney(amount: number, currency: string): string {
+  const value = amount.toLocaleString("en-US");
+  return currency === "USD" ? `$${value}` : `${currency} ${value}`;
+}
+
+/** Format a country's fee, e.g. `KES 200` for Kenya or `$63` for the default. */
+export function formatFeeForCountry(country?: string | null): string {
+  const price = getCountryPrice(country);
+  return formatMoney(price.amount, price.currency);
+}
+
+/** Format a stored payment amount + currency. */
+export function formatFee(amount: number, currency: string = "USD"): string {
+  return formatMoney(amount, currency);
+}
+
+// Rows for the public pricing table (special countries + the default fallback).
+export const PRICING_TABLE: { label: string; price: CountryPrice }[] = [
+  { label: "Kenya", price: COUNTRY_PRICING.Kenya },
+  { label: "Uganda", price: COUNTRY_PRICING.Uganda },
+  { label: "Tanzania", price: COUNTRY_PRICING.Tanzania },
+  { label: "England (United Kingdom)", price: COUNTRY_PRICING.England },
+  { label: "Burundi", price: COUNTRY_PRICING.Burundi },
+  { label: "United States", price: COUNTRY_PRICING["United States"] },
+  { label: "China", price: COUNTRY_PRICING.China },
+  { label: "Nigeria", price: COUNTRY_PRICING.Nigeria },
+  { label: "All other countries", price: DEFAULT_PRICE },
+];

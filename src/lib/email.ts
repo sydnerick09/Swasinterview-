@@ -46,7 +46,7 @@ export async function sendConfirmationEmail(app: Application): Promise<void> {
       "",
       `Your Application ID is: ${app.applicationId}`,
       `Country: ${app.account.country || app.personal.country}`,
-      `Application Fee: ${formatFee(app.payment.amount)}`,
+      `Application Fee: ${formatFee(app.payment.amount, app.payment.currency)}`,
       `Payment Status: ${app.payment.paid ? "Paid" : "Awaiting payment"}`,
       "",
       `Your uploaded documents will be reviewed by our recruitment team.`,

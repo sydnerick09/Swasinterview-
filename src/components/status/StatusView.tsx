@@ -83,7 +83,7 @@ export function StatusView({ idOrPublicId }: { idOrPublicId: string }) {
         </div>
         <div className="text-right">
           <p className="text-xs uppercase tracking-wide text-muted">Application Fee</p>
-          <p className="text-lg font-bold">{formatFee(app.payment.amount)}</p>
+          <p className="text-lg font-bold">{formatFee(app.payment.amount, app.payment.currency)}</p>
         </div>
       </div>
 
@@ -172,7 +172,7 @@ function ConfirmationView({ app }: { app: Application }) {
           <div>
             <dt className="text-xs uppercase tracking-wide text-muted">Payment</dt>
             <dd className="text-sm font-semibold">
-              {formatFee(app.payment.amount)} · {app.payment.transactionRef}
+              {formatFee(app.payment.amount, app.payment.currency)} · {app.payment.transactionRef}
             </dd>
           </div>
         </dl>

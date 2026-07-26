@@ -1,4 +1,4 @@
-import { getApplicationFee } from "../pricing";
+import { getApplicationFee, getApplicationCurrency } from "../pricing";
 import type { Application, ApplicationStatus } from "../types";
 import { uid } from "../utils";
 
@@ -85,7 +85,7 @@ export function createEmptyApplication(): Application {
     },
     emergencyContact: { name: "", relationship: "", phone: "", email: "" },
     references: [],
-    payment: { amount: 0, currency: "KES", paid: false },
+    payment: { amount: 0, currency: "USD", paid: false },
     createdAt: now,
     updatedAt: now,
   };
@@ -122,10 +122,12 @@ export function saveApplication(app: Application): void {
   const apps = listApplications();
   const idx = apps.findIndex((a) => a.id === app.id);
   const updated: Application = { ...app, updatedAt: new Date().toISOString() };
-  // Keep the fee in sync with the selected country (single source of truth).
+  // Keep the fee and currency in sync with the selected country (single source of truth).
+  const country = updated.account.country || updated.personal.country;
   updated.payment = {
     ...updated.payment,
-    amount: getApplicationFee(updated.account.country || updated.personal.country),
+    amount: getApplicationFee(country),
+    currency: getApplicationCurrency(country),
   };
   if (idx >= 0) apps[idx] = updated;
   else apps.push(updated);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useWizard } from "../WizardContext";
 import { TextField, SelectField } from "@/components/ui/Field";
@@ -107,6 +108,18 @@ export function StepAccount() {
         placeholder="Confirm your password"
         autoComplete="new-password"
       />
+
+      <p className="text-xs text-muted sm:col-span-2">
+        By creating an account and continuing, you agree to our{" "}
+        <Link href="/terms" className="font-medium text-brand-600 hover:underline">
+          Terms &amp; Conditions
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="font-medium text-brand-600 hover:underline">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </div>
   );
 }

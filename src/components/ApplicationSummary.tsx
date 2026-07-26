@@ -73,7 +73,7 @@ export function ApplicationSummary({
         <Row label="Phone" value={app.account.phone} />
         <Row label="Country" value={app.account.country} />
         <Row label="Username" value={app.account.username} />
-        <Row label="Application Fee" value={formatFee(app.payment.amount)} />
+        <Row label="Application Fee" value={formatFee(app.payment.amount, app.payment.currency)} />
       </Section>
 
       <Section title="Personal Information" step={1} onEdit={onEdit}>
