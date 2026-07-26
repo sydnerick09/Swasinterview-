@@ -31,7 +31,7 @@ export const DEFAULT_PRICE: CountryPrice = { currency: "USD", amount: 63 };
 
 // Explicit per-country prices. Countries not listed fall back to DEFAULT_PRICE (USD).
 export const COUNTRY_PRICING: Record<string, CountryPrice> = {
-  Kenya: { currency: "KES", amount: 200 },
+  Kenya: { currency: "KES", amount: 320 },
   England: { currency: "KES", amount: 7000 },
   "United Kingdom": { currency: "KES", amount: 7000 },
   Uganda: { currency: "UGX", amount: roundTo(UGANDA_KES_EQUIVALENT * KES_TO_UGX, 500) },
