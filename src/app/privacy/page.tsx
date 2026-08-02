@@ -42,8 +42,8 @@ export default function PrivacyPage() {
       <LegalSection n={3} title="Data Security">
         <p>
           We take reasonable technical and organisational measures to protect your information
-          against unauthorised access, loss or misuse. Payments are handled by a PCI-DSS compliant
-          provider. However, no method of transmission or storage is completely secure, and we cannot
+          against unauthorised access, loss or misuse. Payments are handled securely by Safaricom
+          M-Pesa. However, no method of transmission or storage is completely secure, and we cannot
           guarantee absolute security.
         </p>
       </LegalSection>
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
       <LegalSection n={5} title="Third-Party Services">
         <p>
           We rely on trusted third-party services to operate the Platform, including our payment
-          provider (Paystack) and hosting infrastructure. These providers process your information
+          provider (Safaricom M-Pesa) and hosting infrastructure. These providers process your information
           only as needed to deliver their services and are bound by their own privacy and security
           obligations.
         </p>

@@ -130,12 +130,16 @@ export interface Reference {
 }
 
 export interface PaymentInfo {
-  amount: number;
+  amount: number; // fee in the display currency
   currency: "KES" | "UGX" | "TZS" | "USD";
   paid: boolean;
   paidAt?: string;
-  transactionRef?: string;
-  method?: string;
+  transactionRef?: string; // M-Pesa receipt or checkout id
+  method?: string; // e.g. "M-Pesa"
+  // M-Pesa (Daraja STK Push) fields
+  chargedKes?: number; // the KES amount actually charged via M-Pesa
+  phone?: string; // payer M-Pesa number
+  checkoutRequestId?: string; // Daraja CheckoutRequestID used to verify the payment
 }
 
 export interface Application {

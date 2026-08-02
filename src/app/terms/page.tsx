@@ -57,7 +57,7 @@ export default function TermsPage() {
         <p>
           A one-time application fee is charged based on your country of residence and is displayed
           in your local currency before payment. Fees are processed securely through our payment
-          provider (Paystack). Application fees are generally non-refundable except where required by
+          provider (Safaricom M-Pesa). Application fees are generally non-refundable except where required by
           law. Any rewards or earnings for completed work are paid according to the schedule and
           withdrawal methods communicated to approved applicants.
         </p>

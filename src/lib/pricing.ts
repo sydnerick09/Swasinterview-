@@ -1,8 +1,9 @@
-// Per-country pricing. Each country resolves to an { amount, currency } pair that is
-// both displayed to the applicant and charged via Paystack — display and charge always match.
+// Per-country pricing. Each country resolves to an { amount, currency } pair used for
+// DISPLAY. Payment is collected via M-Pesa (STK Push), which only supports KES, so the
+// displayed amount is converted to its KES equivalent at checkout (see getKesChargeAmount).
 //
-// Currency rules:
-//   Kenya                  -> KES 200 (fixed)
+// Currency rules (display):
+//   Kenya                  -> KES 320 (fixed)
 //   Uganda                 -> UGX (≈ KES 500 equivalent)
 //   Tanzania               -> TZS (≈ KES 400 equivalent)
 //   England / United Kingdom -> KES 7,000
@@ -21,6 +22,7 @@ export interface CountryPrice {
 // derive the Uganda/Tanzania local amounts from their KES equivalents.
 const KES_TO_UGX = Number(process.env.NEXT_PUBLIC_KES_TO_UGX) || 29;
 const KES_TO_TZS = Number(process.env.NEXT_PUBLIC_KES_TO_TZS) || 20;
+const USD_TO_KES = Number(process.env.NEXT_PUBLIC_USD_TO_KES) || 130;
 
 const UGANDA_KES_EQUIVALENT = 500;
 const TANZANIA_KES_EQUIVALENT = 400;
@@ -75,6 +77,31 @@ export function formatFeeForCountry(country?: string | null): string {
 /** Format a stored payment amount + currency. */
 export function formatFee(amount: number, currency: string = "USD"): string {
   return formatMoney(amount, currency);
+}
+
+/**
+ * The amount to actually charge via M-Pesa, in whole KES. M-Pesa only supports KES, so
+ * each country's displayed fee is converted to its KES equivalent at checkout.
+ */
+export function getKesChargeAmount(country?: string | null): number {
+  const { amount, currency } = getCountryPrice(country);
+  let kes: number;
+  switch (currency) {
+    case "KES":
+      kes = amount;
+      break;
+    case "UGX":
+      kes = amount / KES_TO_UGX;
+      break;
+    case "TZS":
+      kes = amount / KES_TO_TZS;
+      break;
+    case "USD":
+    default:
+      kes = amount * USD_TO_KES;
+      break;
+  }
+  return Math.max(1, Math.round(kes));
 }
 
 // Rows for the public pricing table (special countries + the default fallback).
