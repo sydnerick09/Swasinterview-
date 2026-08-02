@@ -8,13 +8,17 @@ import type { PortalSettings } from "./types";
 
 const envOpenDate = process.env.NEXT_PUBLIC_OPEN_DATE;
 const envWindowDays = process.env.NEXT_PUBLIC_WINDOW_DAYS;
+const envCloseDate = process.env.NEXT_PUBLIC_CLOSE_DATE;
 const envAdminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
 
 export const DEFAULT_SETTINGS: PortalSettings = {
   // Defaults to "now" the first time the portal is opened in a browser, giving a
-  // live 4-day window. Overridden by env or admin config.
+  // live window. Overridden by env config.
   openDate: envOpenDate || new Date().toISOString(),
   windowDays: envWindowDays ? Number(envWindowDays) : 4,
+  // A fixed, global closing deadline. When set (via NEXT_PUBLIC_CLOSE_DATE) it applies
+  // to every visitor and overrides the per-browser openDate + windowDays window.
+  closeDate: envCloseDate || undefined,
   adminPassword: envAdminPassword || "swastask-admin",
 };
 
@@ -31,9 +35,13 @@ export function computeWindow(
   now: number = Date.now(),
 ): WindowState {
   const open = new Date(settings.openDate).getTime();
-  const closeDate = new Date(open + settings.windowDays * 24 * 60 * 60 * 1000);
+  // A fixed closeDate (global deadline) takes precedence over openDate + windowDays.
+  const closeMs = settings.closeDate
+    ? new Date(settings.closeDate).getTime()
+    : open + settings.windowDays * 24 * 60 * 60 * 1000;
+  const closeDate = new Date(closeMs);
   const hasStarted = now >= open;
-  const msRemaining = Math.max(0, closeDate.getTime() - now);
+  const msRemaining = Math.max(0, closeMs - now);
   return {
     open: hasStarted && msRemaining > 0,
     hasStarted,

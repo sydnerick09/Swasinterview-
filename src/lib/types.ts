@@ -173,5 +173,6 @@ export interface PortalSettings {
   // 4-day (configurable) application window
   openDate: string; // ISO timestamp when applications open
   windowDays: number; // duration of the window in days
+  closeDate?: string; // absolute ISO deadline; when set it overrides openDate + windowDays
   adminPassword: string; // demo-only admin gate
 }
